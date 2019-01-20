@@ -1,4 +1,13 @@
-# Byte-compiled / optimized / DLL files
+.bash*
+.cache
+.pyenv
+.ssh
+.vim
+.vimrc
+.viminfo
+.mysql_history
+
+ Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
