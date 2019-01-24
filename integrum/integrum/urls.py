@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from chat.urls import router as chat_router
+from account.urls import router as account_router
+
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
+
+schema_view = get_schema_view(title='Integrum API')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/chat/', include(chat_router.urls)),
+    path('api/account/', include(account_router.urls)),
+    path('docs/', include_docs_urls(title='Integrum API')),
+    path('schema/', schema_view),
 ]
