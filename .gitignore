@@ -6,6 +6,8 @@
 .vimrc
 .viminfo
 .mysql_history
+.config
+.npm
 
  Byte-compiled / optimized / DLL files
 __pycache__/
