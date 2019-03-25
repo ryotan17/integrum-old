@@ -22,14 +22,14 @@ class IssueCategory(models.Model):
 
 class Issue(models.Model):
     PRIORITY_CHOICES = (
-        ('H', 'High'),
-        ('N', 'Normal'),
-        ('L', 'Low'),
+        ('Hign', 'High'),
+        ('Normal', 'Normal'),
+        ('Low', 'Low'),
     )
     STATUS_CHOICES = (
-        ('O', 'Open'),
-        ('I', 'InProgress'),
-        ('C', 'Closed'),
+        ('Open', 'Open'),
+        ('InProgress', 'InProgress'),
+        ('Closed', 'Closed'),
     )
     group = models.ForeignKey(Group, on_delete=models.PROTECT)
     due_date = models.DateTimeField(_('due_date'))
