@@ -12,6 +12,9 @@ class Group(models.Model):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
+    def __str__(self):
+        return str(self.id) + '_' + self.name
+
 
 class UserManager(BaseUserManager):
     """ユーザーマネージャー."""
@@ -80,6 +83,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def __str__(self):
+        return str(self.id) + '_' + self.username
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
