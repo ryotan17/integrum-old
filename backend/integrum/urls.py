@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from chat.urls import router as chat_router
 from account.urls import router as account_router
@@ -32,3 +34,6 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='Integrum API')),
     path('schema/', schema_view),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

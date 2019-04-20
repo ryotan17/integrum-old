@@ -2,3 +2,32 @@
   max-height: 35vh;
   overflow: hidden;
 }
+
+.avatar {
+  margin-right: 10px;
+  width: 40px;
+}
+.avatar img {
+  width: 40px;
+  height: 40px;
+  max-width: 40px;
+}
+
+.author {
+  font-weight: bold;
+  margin-right: 10px;
+  display: inline-block;
+  font-size: 15px;
+  vertical-align: middle;
+}
+
+.created-at {
+  font-size: 13px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+p.text {
+  font-size: 15px;
+  margin: 0px;
+}

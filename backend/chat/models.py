@@ -57,12 +57,13 @@ class Issue(models.Model):
 
 class Message(models.Model):
     text = models.TextField(_('text'))
-    issue = models.ForeignKey(Issue, on_delete=models.PROTECT, blank=True)
+    issue = models.ForeignKey(Issue, on_delete=models.PROTECT, blank=True, null=True)
     space = models.ForeignKey(Space, on_delete=models.PROTECT)
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='messages_author')
     mention = models.ManyToManyField(User, blank=True, related_name='massages_mention')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    parent_message = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
         return str(self.space) + '_' + str(self.author) + '_' + str(self.id)

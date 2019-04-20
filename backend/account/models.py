@@ -73,6 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     is_manager = models.BooleanField(_('manager status'), default=False)
+    photo = models.ImageField(upload_to='profile_photo/', blank=True, null=True)
 
     objects = UserManager()
 
@@ -91,12 +92,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    @property
-    def username(self):
-        """username属性のゲッター
-
-        他アプリケーションが、username属性にアクセスした場合に備えて定義
-        メールアドレスを返す
-        """
-        return self.email
+#    @property
+#    def username(self):
+#        """username属性のゲッター
+#
+#        他アプリケーションが、username属性にアクセスした場合に備えて定義
+#        メールアドレスを返す
+#        """
+#        return self.email
 
