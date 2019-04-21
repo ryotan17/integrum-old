@@ -23,6 +23,7 @@ from account.urls import router as account_router
 
 from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
+from rest_framework_jwt.views import obtain_jwt_token
 
 schema_view = get_schema_view(title='Integrum API')
 
@@ -33,6 +34,7 @@ urlpatterns = [
     path('api/account/', include(account_router.urls)),
     path('docs/', include_docs_urls(title='Integrum API')),
     path('schema/', schema_view),
+    path('jwt-token', obtain_jwt_token),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

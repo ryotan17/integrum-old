@@ -5,11 +5,13 @@ export class User {
   username: string;
   date_joined: Date;
   is_manager: boolean;
+  token?: string;
 }
 
 export class Message {
   id: number;
   text: string;
+  texts: string[];
   issue: number;
   space: number;
   author: User;

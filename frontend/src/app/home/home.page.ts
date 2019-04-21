@@ -40,7 +40,7 @@ export class HomePage implements OnInit {
 
   splitByN() {
     this.messages.forEach( message => {
-      message.text = message.text.split(/\r?\n/g);
+      message.texts = message.text.split(/\r?\n/g);
     });
   }
 
