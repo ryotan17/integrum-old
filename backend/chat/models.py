@@ -1,6 +1,6 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 from account.models import Group, User
 
 
@@ -64,7 +64,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
     parent_message = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
+    is_read = models.BooleanField(_('is read'), default=False)
 
     def __str__(self):
         return str(self.space) + '_' + str(self.author) + '_' + str(self.id)
-

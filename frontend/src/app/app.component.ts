@@ -5,7 +5,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthenticationService } from '@app/service/authentication.service';
-import { User, Space } from '@app/class/chat';
+import { User, Space, Group } from '@app/class/chat';
 import { ChatService } from '@app/service/chat.service';
 
 @Component({
@@ -14,6 +14,7 @@ import { ChatService } from '@app/service/chat.service';
 })
 export class AppComponent {
   public spaces: Space[] = [];
+  public group = new Group();
 
   currentUser: User;
   constructor(
@@ -32,6 +33,8 @@ export class AppComponent {
     this.app.getAllSpaces(user_id).subscribe(
       data => {
         this.spaces = data;
+        this.group = this.spaces[0].group;
+        console.log(this.group);
       },
       error => {
         console.log(error);
@@ -50,6 +53,7 @@ export class AppComponent {
           this.getSpaces();
         } else {
           this.router.navigate(['login']);
+          this.group.name = '';
         }
       });
 

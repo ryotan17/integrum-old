@@ -3,11 +3,18 @@
     <ion-menu>
       <ion-header>
         <ion-toolbar>
-          <ion-title>InChat</ion-title>
+          <ion-title>InChat {{group.name}}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerDirection]="'root'" [routerLink]="'/messages/'">
+              <ion-label>
+                All Spaces
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
           <ion-menu-toggle auto-hide="false" *ngFor="let space of spaces">
             <ion-item [routerDirection]="'root'" [routerLink]="'/messages/' + space.id">
               <ion-label>

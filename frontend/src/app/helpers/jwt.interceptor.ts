@@ -11,6 +11,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
         const token = this.auth.token;
+        console.log(token);
         if (token) {
             request = request.clone({
                 setHeaders: {

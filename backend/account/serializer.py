@@ -14,4 +14,4 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'group', 'email', 'username', 'is_staff', 'is_active', 'date_joined',
             'is_manager', 'photo')
-
+    group = GroupSerializer()
