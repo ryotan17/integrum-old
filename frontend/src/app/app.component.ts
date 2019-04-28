@@ -5,34 +5,39 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthenticationService } from '@app/service/authentication.service';
-import { User } from '@app/class/chat';
+import { User, Space } from '@app/class/chat';
+import { ChatService } from '@app/service/chat.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  public appPages = [
-    {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
-    }
-  ];
+  public spaces: Space[] = [];
+
   currentUser: User;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
+    private app: ChatService,
     private auth: AuthenticationService
   ) {
     this.initializeApp();
+  }
+
+  getSpaces = () => {
+    const user_id = this.auth.user.id;
+    this.app.getAllSpaces(user_id).subscribe(
+      data => {
+        this.spaces = data;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   initializeApp() {
@@ -42,7 +47,8 @@ export class AppComponent {
 
       this.auth.authenticationState.subscribe(state => {
         if (state) {
-          this.router.navigate(['home']);
+          this.router.navigate(['messages']);
+          this.getSpaces();
         } else {
           this.router.navigate(['login']);
         }

@@ -1,17 +1,17 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 import django_filters
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 
 from .models import Space, IssueCategory, Issue, Message
 from .serializer import (
     SpaceSerializer, IssueCategorySerializer, IssueSerializer, MessageSerializer
 )
 
-from rest_framework.decorators import api_view
 
 class SpaceViewSet(viewsets.ModelViewSet):
     queryset = Space.objects.all().order_by('-created_at')
     serializer_class = SpaceSerializer
+    filterset_fields = ('group', 'member', )
 
 
 class IssueCategoryViewSet(viewsets.ModelViewSet):
@@ -27,4 +27,4 @@ class IssueViewSet(viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all().order_by('-created_at')
     serializer_class = MessageSerializer
-
+    filterset_fields = ('author', 'space', )

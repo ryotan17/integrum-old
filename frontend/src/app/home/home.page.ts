@@ -1,14 +1,16 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 
-import { Message, User, Session } from '../class/chat';
+import { Message, User, Session, Space } from '../class/chat';
 import { ChatService } from '../service/chat.service';
 import { UserService } from '../service/user.service';
 import { AuthenticationService } from '@app/service/authentication.service';
+import { ConsoleReporter } from 'jasmine';
 
 
 @Component({
@@ -20,6 +22,7 @@ export class HomePage implements OnInit {
   public content = '';
   public messages: Message[] = [];
   public user: User;
+  public space: Space;
   data = '';
 
   constructor(
@@ -28,22 +31,25 @@ export class HomePage implements OnInit {
     private toastController: ToastController,
     private app: ChatService,
     private userService: UserService,
-    public element: ElementRef) { }
+    public element: ElementRef,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getMessages();
   }
 
   getMessages = () => {
-    this.app.getAllMessages().subscribe(
-      data => {
-        this.messages = data;
-        this.splitByN();
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.app.getAllMessages(Number(params.get('id'))).subscribe(
+        data => {
+          this.messages = data;
+          this.splitByN();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    });
   }
 
   splitByN() {

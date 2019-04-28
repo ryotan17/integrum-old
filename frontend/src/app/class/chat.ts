@@ -8,12 +8,22 @@ export class User {
   token: string;
 }
 
+export class Space {
+  id: number;
+  group: number;
+  title: string;
+  description: string;
+  created_at: Date;
+  updated_at: Date;
+  member: User[];
+}
+
 export class Message {
   id: number;
   text: string;
   texts: string[];
   issue: number;
-  space: number;
+  space: Space[];
   author: User;
   mention: User[];
   created_at: Date;
