@@ -5,7 +5,7 @@ export class User {
   username: string;
   date_joined: Date;
   is_manager: boolean;
-  token?: string;
+  token: string;
 }
 
 export class Message {

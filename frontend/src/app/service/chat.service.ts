@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { AuthenticationService } from '@app/service/authentication.service';
 
 @Injectable({ providedIn: 'root', })
 export class ChatService {
 
-  baseurl = 'http://127.0.0.1:8000';
-  HttpHeaders = new HttpHeaders({'Content-type': 'application/json'});
+  baseurl = environment.url;
+  HttpHeaders = new HttpHeaders({'Content-type': 'application/json'}).set('Authorization', 'JWT ' + this.auth.token);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthenticationService) {}
 
   getAllMessages(): Observable<any> {
     return this.http.get(this.baseurl + '/api/chat/message/', {headers: this.HttpHeaders});

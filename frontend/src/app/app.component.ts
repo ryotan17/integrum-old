@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AuthenticationService } from '@app/service/authentication.service';
+import { User } from '@app/class/chat';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +24,13 @@ export class AppComponent {
       icon: 'list'
     }
   ];
-
+  currentUser: User;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private router: Router,
+    private auth: AuthenticationService
   ) {
     this.initializeApp();
   }
@@ -34,6 +39,21 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.auth.authenticationState.subscribe(state => {
+        if (state) {
+          this.router.navigate(['home']);
+        } else {
+          this.router.navigate(['login']);
+        }
+      });
+
     });
   }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
+
 }

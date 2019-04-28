@@ -1,11 +1,15 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Storage } from '@ionic/storage';
+import { ToastController } from '@ionic/angular';
 
 import { Message, User, Session } from '../class/chat';
 import { ChatService } from '../service/chat.service';
 import { UserService } from '../service/user.service';
+import { AuthenticationService } from '@app/service/authentication.service';
 
-import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
@@ -16,8 +20,12 @@ export class HomePage implements OnInit {
   public content = '';
   public messages: Message[] = [];
   public user: User;
+  data = '';
 
   constructor(
+    private auth: AuthenticationService,
+    private storage: Storage,
+    private toastController: ToastController,
     private app: ChatService,
     private userService: UserService,
     public element: ElementRef) { }
@@ -49,6 +57,30 @@ export class HomePage implements OnInit {
     textArea.style.overflow = 'hidden';
     textArea.style.height = 'auto';
     textArea.style.height = textArea.scrollHeight + 'px';
+  }
+
+  loadSpecialInfo() {
+    // this.auth.getSpecialData().subscribe(res => {
+    //   this.data = res['msg'];
+    // });
+    this.storage.get('access_token').then(res => {
+      this.data = res;
+    });
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
+  clearToken() {
+    // ONLY FOR TESTING!
+    this.storage.remove('access_token');
+
+    const toast = this.toastController.create({
+      message: 'JWT removed',
+      duration: 3000
+    });
+    toast.then(res => res.present());
   }
 
 }
