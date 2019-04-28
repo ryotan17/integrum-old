@@ -8,7 +8,7 @@ import { AuthenticationService } from '@app/service/authentication.service';
 export class ChatService {
 
   baseurl = environment.url;
-  HttpHeaders = new HttpHeaders({'Content-type': 'application/json'}).set('Authorization', 'JWT ' + this.auth.token);
+  HttpHeaders = new HttpHeaders({'Content-type': 'application/json'});
 
   constructor(private http: HttpClient, private auth: AuthenticationService) {}
 
