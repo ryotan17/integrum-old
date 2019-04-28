@@ -32,7 +32,6 @@ export class AppComponent {
     this.app.getAllSpaces(user_id).subscribe(
       data => {
         this.spaces = data;
-        console.log(data);
       },
       error => {
         console.log(error);

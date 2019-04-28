@@ -64,6 +64,7 @@ export class AuthenticationService {
         tap(res => {
           this.storage.set(TOKEN_KEY, res['token']);
           this.user = this.helper.decodeToken(res['token']);
+          this.token = res['token'];
           this.authenticationState.next(true);
         }),
         catchError(e => {

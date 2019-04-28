@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Home
+      {{space.title}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -24,13 +24,6 @@
       </span>
     </ion-item>
   </ion-list>
-
-  <p>{{ data }}</p>
- 
-  <ion-button expand="full" (click)="loadSpecialInfo()">Load Special Info</ion-button>
-  <ion-button expand="full" (click)="logout()">Logout</ion-button>
-  <ion-button expand="full" (click)="clearToken()">Clear JWT</ion-button>
-
 </ion-content>
 
 <ion-footer>

@@ -1,17 +1,10 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
-
-import { Message, User, Session, Space } from '../class/chat';
+import { Message, User, Space } from '../class/chat';
 import { ChatService } from '../service/chat.service';
-import { UserService } from '../service/user.service';
 import { AuthenticationService } from '@app/service/authentication.service';
-import { ConsoleReporter } from 'jasmine';
-
+import { AppComponent } from '@app/app.component';
 
 @Component({
   selector: 'app-home',
@@ -22,17 +15,15 @@ export class HomePage implements OnInit {
   public content = '';
   public messages: Message[] = [];
   public user: User;
-  public space: Space;
+  public space =  new Space();
   data = '';
 
   constructor(
     private auth: AuthenticationService,
-    private storage: Storage,
-    private toastController: ToastController,
     private app: ChatService,
-    private userService: UserService,
     public element: ElementRef,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private appComponent: AppComponent) { }
 
   ngOnInit() {
     this.getMessages();
@@ -40,6 +31,13 @@ export class HomePage implements OnInit {
 
   getMessages = () => {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      if (params.get('id')) {
+        this.space = this.appComponent.spaces.filter((space) => {
+          return space.id === Number(params.get('id'));
+        })[0];
+      } else {
+        this.space.title = 'All Spaces';
+      }
       this.app.getAllMessages(Number(params.get('id'))).subscribe(
         data => {
           this.messages = data;
@@ -65,28 +63,8 @@ export class HomePage implements OnInit {
     textArea.style.height = textArea.scrollHeight + 'px';
   }
 
-  loadSpecialInfo() {
-    // this.auth.getSpecialData().subscribe(res => {
-    //   this.data = res['msg'];
-    // });
-    this.storage.get('access_token').then(res => {
-      this.data = res;
-    });
-  }
-
   logout() {
     this.auth.logout();
-  }
-
-  clearToken() {
-    // ONLY FOR TESTING!
-    this.storage.remove('access_token');
-
-    const toast = this.toastController.create({
-      message: 'JWT removed',
-      duration: 3000
-    });
-    toast.then(res => res.present());
   }
 
 }
