@@ -31,13 +31,7 @@ export class HomePage implements OnInit {
 
   getMessages = () => {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      if (params.get('id')) {
-        this.space = this.appComponent.spaces.filter((space) => {
-          return space.id === Number(params.get('id'));
-        })[0];
-      } else {
-        this.space.title = 'All Spaces';
-      }
+      this.space = this.getSpace(params);
       this.app.getAllMessages(Number(params.get('id'))).subscribe(
         data => {
           this.messages = data;
@@ -48,6 +42,18 @@ export class HomePage implements OnInit {
         }
       );
     });
+  }
+
+  getSpace(params): Space {
+    if (params.get('id')) {
+      return this.appComponent.spaces.filter((space) => {
+        return space.id === Number(params.get('id'));
+      })[0];
+    } else {
+      const space = new Space();
+      space.title = 'All Spaces';
+      return space;
+    }
   }
 
   splitByN() {

@@ -34,7 +34,6 @@ export class AppComponent {
       data => {
         this.spaces = data;
         this.group = this.spaces[0].group;
-        console.log(this.group);
       },
       error => {
         console.log(error);
