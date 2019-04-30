@@ -13,6 +13,7 @@ export class User {
   date_joined: Date;
   is_manager: boolean;
   token: string;
+  photo: string;
 }
 
 export class Space {

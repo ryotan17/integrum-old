@@ -28,8 +28,8 @@
 
 <ion-footer>
     <ion-item>
-      <ion-textarea placeholder="Message" (ionChange)="textChange($event)" float-left></ion-textarea>
-      <ion-button item-end size="default">送信</ion-button>
+      <ion-textarea placeholder="Message" (ionChange)="textChange($event)" float-left #sendMessage (keydown.meta.enter)="send(sendMessage.value); sendMessage.value='';"></ion-textarea>
+      <ion-button item-end size="default" (click)="send(sendMessage.value); sendMessage.value='';">送信</ion-button>
     </ion-item>
 </ion-footer>
 

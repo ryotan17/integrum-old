@@ -11,12 +11,12 @@ const routes: Routes = [
   },
   {
     path: 'messages',
-    loadChildren: './home/home.module#HomePageModule',
+    loadChildren: './chat/chat.module#ChatPageModule',
     canActivate: [AuthGuard],
   },
   {
     path: 'messages/:id',
-    loadChildren: './home/home.module#HomePageModule',
+    loadChildren: './chat/chat.module#ChatPageModule',
     canActivate: [AuthGuard],
   },
   {

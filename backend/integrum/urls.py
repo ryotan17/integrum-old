@@ -18,24 +18,23 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from chat.urls import router as chat_router
-from account.urls import router as account_router
-
 from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 from rest_framework_jwt.views import obtain_jwt_token
+
+from chat.urls import router as chat_router
+from account.urls import router as account_router
 
 schema_view = get_schema_view(title='Integrum API')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/chat/', include(chat_router.urls)),
-    path('api/account/', include(account_router.urls)),
+    path('chat/', include(chat_router.urls)),
+    path('account/', include(account_router.urls)),
     path('docs/', include_docs_urls(title='Integrum API')),
     path('schema/', schema_view),
     path('jwt-token', obtain_jwt_token),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

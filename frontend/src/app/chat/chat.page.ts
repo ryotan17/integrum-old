@@ -1,20 +1,20 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { Message, User, Space } from '../class/chat';
+import { Message, Space } from '../class/chat';
 import { ChatService } from '../service/chat.service';
 import { AuthenticationService } from '@app/service/authentication.service';
 import { AppComponent } from '@app/app.component';
+import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-chat',
+  templateUrl: 'chat.page.html',
+  styleUrls: ['chat.page.scss'],
 })
-export class HomePage implements OnInit {
+export class ChatPage implements OnInit {
   public content = '';
   public messages: Message[] = [];
-  public user: User;
   public space =  new Space();
   data = '';
 
@@ -25,26 +25,37 @@ export class HomePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private appComponent: AppComponent) { }
 
-  ngOnInit() {
-    this.getMessages();
+  send(message: string): void {
+    this.app.send(
+      this.auth.user, message
+    );
   }
 
-  getMessages = () => {
+  ngOnInit() {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.getMessages(params);
       this.space = this.getSpace(params);
-      this.app.getAllMessages(Number(params.get('id'))).subscribe(
-        data => {
-          this.messages = data;
-          this.splitByN();
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      this.app.connect(Number(params.get('id')), this.auth.user.user_id).subscribe(msg => {
+        msg.texts = msg.text.split(/\r?\n/g);
+        msg.author.photo = environment.url + msg.author.photo;
+        this.messages.push(msg);
+      });
     });
   }
 
-  getSpace(params): Space {
+  getMessages = (params: ParamMap) => {
+    this.app.getAllMessages(Number(params.get('id'))).subscribe(
+      data => {
+        this.messages = data;
+        this.splitByN();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  getSpace(params: ParamMap): Space {
     if (params.get('id')) {
       return this.appComponent.spaces.filter((space) => {
         return space.id === Number(params.get('id'));
@@ -52,6 +63,7 @@ export class HomePage implements OnInit {
     } else {
       const space = new Space();
       space.title = 'All Spaces';
+      space.id = 1;
       return space;
     }
   }
