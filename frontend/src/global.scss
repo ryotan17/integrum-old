@@ -16,3 +16,38 @@
   min-width: 220px;
 }
 
+.account-menu-popover {
+  .popover-content {
+    top: calc(54px - var(--ion-safe-area-top, 0px)) !important;
+    right: calc(10px + var(--ion-safe-area-right, 0px)) !important;
+    left: unset !important;
+    transform-origin: right top !important;
+    width: 250px !important;
+  }
+  .popover-arrow {
+    top: calc(44px - var(--ion-safe-area-top, 0px)) !important;
+    right: calc(20px + var(--ion-safe-area-right, 0px)) !important;
+    left: unset !important;
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .popover-arrow:after {
+    background: rgba(var(--ion-background-color-rgb,255,255,255),.8);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    left: 3px;
+    top: 3px;
+    border-radius: 3px;
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background: var(--background);
+    content: "";
+    z-index: 10;
+  }
+}

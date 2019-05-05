@@ -43,9 +43,9 @@ export class ChatService {
   }
 
   // REST API
-  getAllMessages(space_id): Observable<any> {
-    const options = space_id ?
-      { params: new HttpParams().set('space', space_id), headers: this.HttpHeaders} : {headers: this.HttpHeaders};
+  getAllMessages(space_id, offset): Observable<any> {
+    const options = { params: new HttpParams().set('space', space_id ? space_id : '').set('offset', offset).set('limit', '15'),
+                      headers: this.HttpHeaders};
     return this.http.get(this.baseurl + '/chat/api/message/', options);
   }
   getMessage(id): Observable<any> {

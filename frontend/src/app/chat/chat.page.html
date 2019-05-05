@@ -6,10 +6,13 @@
     <ion-title>
       {{space.title}}
     </ion-title>
+    <ion-button slot="secondary" (click)="accoutMenuPopover()">
+        <ion-icon name="contact"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScrollEnd)="onScroll()">
   <ion-list lines="none">
     <ion-item *ngFor="let message of messages">
       <ion-avatar class="avatar"><img src="{{message.author.photo}}"></ion-avatar>
@@ -21,7 +24,7 @@
         <div class="content-body">
           <p class="text" *ngFor="let text of message.texts">{{text}}</p>
         </div>
-      </span>
+      </span>    
     </ion-item>
   </ion-list>
 </ion-content>

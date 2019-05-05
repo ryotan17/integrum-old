@@ -1,10 +1,12 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { IonInfiniteScroll, IonContent, PopoverController } from '@ionic/angular';
 
 import { Message, Space } from '../class/chat';
 import { ChatService } from '../service/chat.service';
 import { AuthenticationService } from '@app/service/authentication.service';
 import { AppComponent } from '@app/app.component';
+import { AccountMenuComponent } from '@app/account-menu/account-menu.component';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -13,17 +15,31 @@ import { environment } from '../../environments/environment';
   styleUrls: ['chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  public content = '';
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent) content: IonContent;
+
   public messages: Message[] = [];
   public space =  new Space();
   data = '';
+  private nextUrl: URL;
 
   constructor(
     private auth: AuthenticationService,
     private app: ChatService,
     public element: ElementRef,
     private activatedRoute: ActivatedRoute,
-    private appComponent: AppComponent) { }
+    private appComponent: AppComponent,
+    public popoverController: PopoverController) { }
+
+  loadData() {
+    setTimeout(() => {
+      if (!this.nextUrl) {
+        return;
+      }
+      const offset = this.nextUrl.searchParams.get('offset');
+      this.getMessages(this.space.id, offset);
+    }, 500);
+  }
 
   send(message: string): void {
     this.app.send(
@@ -33,7 +49,7 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      this.getMessages(params);
+      this.getMessages(params.get('id'), '0');
       this.space = this.getSpace(params);
       this.app.connect(Number(params.get('id')), this.auth.user.user_id).subscribe(msg => {
         msg.texts = msg.text.split(/\r?\n/g);
@@ -43,10 +59,30 @@ export class ChatPage implements OnInit {
     });
   }
 
-  getMessages = (params: ParamMap) => {
-    this.app.getAllMessages(Number(params.get('id'))).subscribe(
+  onScroll() {
+    this.content.getScrollElement().then(res => {
+      if (res.scrollTop < 500) {
+        this.loadData();
+      }
+    });
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 100);
+  }
+
+  getMessages = (spaceId, offset) => {
+    this.app.getAllMessages(spaceId, offset).subscribe(
       data => {
-        this.messages = data;
+        if (!this.messages.length) {
+          this.messages = data['results'].reverse();
+        } else {
+          this.messages = data['results'].reverse().concat(this.messages);
+        }
+        this.count = data['count'];
+        this.nextUrl = data['next'] ? new URL(data['next']) : null;
         this.splitByN();
       },
       error => {
@@ -63,7 +99,6 @@ export class ChatPage implements OnInit {
     } else {
       const space = new Space();
       space.title = 'All Spaces';
-      space.id = 1;
       return space;
     }
   }
@@ -81,8 +116,14 @@ export class ChatPage implements OnInit {
     textArea.style.height = textArea.scrollHeight + 'px';
   }
 
-  logout() {
-    this.auth.logout();
+  async accoutMenuPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: AccountMenuComponent,
+      event: ev,
+      translucent: true,
+      cssClass: 'account-menu-popover',
+    });
+    return await popover.present();
   }
 
 }

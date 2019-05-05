@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
+import { AccountMenuComponent } from '@app/account-menu/account-menu.component';
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
@@ -25,8 +26,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, AccountMenuComponent],
+  entryComponents: [AccountMenuComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -47,6 +48,6 @@ export function jwtOptionsFactory(storage) {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
