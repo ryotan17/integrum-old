@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AccountMenuComponent } from '@app/account-menu/account-menu.component';
+import { AccountComponent } from '@app/account/account.component';
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
@@ -26,8 +27,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, AccountMenuComponent],
-  entryComponents: [AccountMenuComponent],
+  declarations: [AppComponent, AccountMenuComponent, AccountComponent],
+  entryComponents: [AccountMenuComponent, AccountComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

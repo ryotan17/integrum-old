@@ -81,7 +81,6 @@ export class ChatPage implements OnInit {
         } else {
           this.messages = data['results'].reverse().concat(this.messages);
         }
-        this.count = data['count'];
         this.nextUrl = data['next'] ? new URL(data['next']) : null;
         this.splitByN();
       },
@@ -116,12 +115,13 @@ export class ChatPage implements OnInit {
     textArea.style.height = textArea.scrollHeight + 'px';
   }
 
-  async accoutMenuPopover(ev: any) {
+  async accountMenuPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: AccountMenuComponent,
       event: ev,
       translucent: true,
       cssClass: 'account-menu-popover',
+      componentProps: self
     });
     return await popover.present();
   }

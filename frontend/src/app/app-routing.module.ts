@@ -19,11 +19,7 @@ const routes: Routes = [
     loadChildren: './chat/chat.module#ChatPageModule',
     canActivate: [AuthGuard],
   },
-  {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
-  },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' }
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
 ];
 
 @NgModule({
