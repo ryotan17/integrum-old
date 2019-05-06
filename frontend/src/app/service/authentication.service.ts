@@ -7,9 +7,6 @@ import { environment } from '../../environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
-import { User } from '@app/class/chat';
-import { AppConst } from '@consts/consts';
-
 const TOKEN_KEY = 'access_token';
 
 @Injectable({

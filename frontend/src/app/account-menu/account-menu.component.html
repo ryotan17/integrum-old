@@ -1,6 +1,6 @@
 <ion-list>
   <ion-list-header>{{ user.username }}</ion-list-header>
-  <ion-item (click)="accountPopover()"><ion-label>登録情報</ion-label></ion-item>
+  <ion-item (click)="presentAccountModal()"><ion-label>登録情報</ion-label></ion-item>
   <ion-item [routerDirection]="'root'" [routerLink]="'/messages/'">
     <ion-label>設定</ion-label>
   </ion-item>

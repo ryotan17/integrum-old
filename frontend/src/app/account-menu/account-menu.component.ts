@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from '@app/service/authentication.service';
-import { PopoverController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { User } from '@app/class/chat';
 import { AccountComponent } from '@app/account/account.component';
 
@@ -15,7 +15,7 @@ export class AccountMenuComponent implements OnInit {
 
   constructor(
     private auth: AuthenticationService,
-    public popoverController: PopoverController) { }
+    public modalController: ModalController) { }
 
   ngOnInit() {
     this.user = this.auth.user;
@@ -25,15 +25,13 @@ export class AccountMenuComponent implements OnInit {
     this.auth.logout();
   }
 
-  async accountPopover(ev: any) {
-    const popover = await this.popoverController.create({
+  async presentAccountModal() {
+    const modal = await this.modalController.create({
       component: AccountComponent,
-      event: ev,
-      translucent: true,
-      cssClass: 'account-popover',
+      componentProps: self
     });
     this.popover.dismiss();
-    return await popover.present();
+    return await modal.present();
   }
 
 }

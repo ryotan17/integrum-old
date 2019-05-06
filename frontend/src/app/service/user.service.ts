@@ -12,10 +12,14 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<any> {
-    return this.http.get(this.baseurl + '/api/account/user/', {headers: this.HttpHeaders});
+    return this.http.get(this.baseurl + '/account/api/user/', {headers: this.HttpHeaders});
   }
   getUser(id): Observable<any> {
-    return this.http.get(this.baseurl + '/api/account/user/' + id + '/', {headers: this.HttpHeaders});
+    return this.http.get(this.baseurl + '/account/api/user/' + id + '/', {headers: this.HttpHeaders});
+  }
+  updateUser(user): Observable<any> {
+    const body = {name: user.text};
+    return this.http.put(this.baseurl + '/account/api/user/' + user.id + '/', body, {headers: this.HttpHeaders});
   }
 
 }
