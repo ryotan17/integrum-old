@@ -7,8 +7,19 @@ from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
 
 
+class Company(models.Model):
+    name = models.CharField(_('company name'), max_length=100, blank=False)
+    address = models.CharField(_('company address'), max_length=255, blank=False)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    def __str__(self):
+        return str(self.id) + '_' + self.name
+
+
 class Group(models.Model):
     name = models.CharField(_('group name'), max_length=100, blank=False)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True, null=True, related_name="groups")
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
@@ -54,7 +65,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """カスタムユーザーモデル."""
 
-    group = models.ManyToManyField(Group, blank=True)
+    group = models.ManyToManyField(Group, blank=True, related_name="users")
+    admin_group = models.ManyToManyField(Group, blank=True, related_name="admin_users")
     email = models.EmailField(_('email address'), unique=True)
     username = models.CharField(_('user name'), max_length=100, blank=True)
     is_staff = models.BooleanField(

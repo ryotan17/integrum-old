@@ -22,6 +22,7 @@ export class AccountMenuComponent implements OnInit {
   }
 
   logout() {
+    this.popover.dismiss();
     this.auth.logout();
   }
 
